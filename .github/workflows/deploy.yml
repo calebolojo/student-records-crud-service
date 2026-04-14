@@ -46,9 +46,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            APP_DIR: "/var/www/nodejs-student-service"
-            APP_NAME: "nodejs-student-service"
-            USER: "ec2-user"
+            APP_DIR="/var/www/nodejs-student-service"
+            APP_NAME="nodejs-student-service"
 
             # ── 1. Remove any existing Node.js versions and Install new Nodejs ──────────────────────────
             echo "Removing and installing a new Node.js..."
@@ -62,7 +61,7 @@ jobs:
 
             # ── 2. Cremove current app folder if existing ──────────────────────────
             echo "Removing old app directory..."
-            if [ -d $APP_DIR ]; then
+            if [ -d "$APP_DIR" ]; then
               sudo chown -R $USER:$USER $APP_DIR
               sudo rm -rf $APP_DIR
               echo "Removed $APP_DIR"
@@ -74,8 +73,8 @@ jobs:
             # Ensure the directory exists and is owned by your user
             echo "Ensure the directory exists and is owned by your user..."
             sudo mkdir -p $APP_DIR
-            sudo chown -R $USER:$USER /$APP_DIR
-            sudo chown -R $USER:$USER /$APP_DIR
+            sudo chown -R $USER:$USER $APP_DIR
+            sudo chown -R $USER:$USER $APP_DIR
 
             # ── 4. Clone or pull latest code ──────────────────────────
             if [ -d "$APP_DIR/.git" ]; then
