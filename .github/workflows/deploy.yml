@@ -46,7 +46,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-
             APP_DIR: "/home/ec2-user/var/www/nodejs-student-service"
             APP_NAME: "nodejs-student-service"
 
