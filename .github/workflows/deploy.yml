@@ -62,7 +62,13 @@ jobs:
 
             # ── 2. Cremove current app folder if existing ──────────────────────────
             echo "Removing old app directory..."
-            rm -rf $APP_DIR
+            if [ -d $APP_DIR ]; then
+              sudo chown -R $USER:$USER $APP_DIR
+              sudo rm -rf $APP_DIR
+              echo "Removed $APP_DIR"
+            else
+              echo "Folder does not exist, skipping..."
+            fi
 
             # ── 3. Create new app folder directory ──────────────────────────
             # Ensure the directory exists and is owned by your user
