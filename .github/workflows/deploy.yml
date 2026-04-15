@@ -122,6 +122,7 @@ jobs:
             echo "Installing dependencies..."
             cd "$APP_DIR"
             npm ci
+            sudo npm install -g typescript  
             npx tsc --project tsconfig.json 2>&1
             echo "✅ Dependencies installed"
 
@@ -140,7 +141,7 @@ jobs:
 
             # ── 8. Prune devDependencies after build ──────────────────
             echo "Pruning devDependencies..."
-            sudo npm prune --omit=dev    # ← remove devDeps now that build is done
+            sudo npm prune --omit=dev    
             echo "✅ Pruned devDependencies"
 
             # Migrate all new SQl schema changes - using drizzle-kit push
