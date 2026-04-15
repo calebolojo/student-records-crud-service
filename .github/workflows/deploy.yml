@@ -75,6 +75,12 @@ jobs:
 
             echo "✅ Safety checks passed for $APP_DIR"
 
+            # ── 2. Set environment variables ──────────────────────────
+            export DATABASE_URL="${{ secrets.DATABASE_URL }}"
+            export NODE_ENV="production"
+            export SERVER_PORT="3000"
+            echo "✅ Environment variables set"
+
             # ── 2. Safety checks ──────────────────────────────────────
             # Install Node.js 18
             echo "Installing Node.js and Git..."
@@ -103,6 +109,15 @@ jobs:
             sudo git clone https://${{ secrets.G_HUB_USERNAME }}:${{ secrets.G_HUB_TOKEN }}@github.com/${{ secrets.G_HUB_USERNAME }}/${{ secrets.G_HUB_REPOSITORY }}.git "$APP_DIR"
             echo "✅ Clone complete"
 
+            # ── 6. Create .env file ───────────────────────────────────
+            echo "Creating .env file..."
+            cat > "$APP_DIR/.env" <<EOF
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            NODE_ENV=production
+            SERVER_PORT=3000
+            EOF
+            echo "✅ .env file created"
+
             # ── 4. Install dependencies ───────────────────────────────
             echo "Installing dependencies..."
             cd "$APP_DIR"
@@ -120,7 +135,8 @@ jobs:
               echo "ERROR: dist folder not found after build, aborting!"
               exit 1
             fi
-            find "$APP_DIR/dist" -print  
+            find "$APP_DIR/dist" -print
+            pwd
 
             # ── 8. Prune devDependencies after build ──────────────────
             echo "Pruning devDependencies..."
