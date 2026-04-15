@@ -99,8 +99,8 @@ jobs:
 
             # ── 4. Git, Clone or pull latest code ──────────────────────────
             echo "Installing git..."
-            sudo apt-get install -y git
-            echo "✅ Installing git"
+            sudo dnf install -y git
+            echo "✅ Git installed"
             echo "Cloning repository..."
             sudo git clone https://${{ secrets.G_HUB_USERNAME }}:${{ secrets.G_HUB_TOKEN }}@github.com/${{ secrets.G_HUB_USERNAME }}/${{ secrets.G_HUB_REPOSITORY }}.git "$APP_DIR"
             echo "✅ Clone complete"
