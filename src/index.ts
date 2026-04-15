@@ -49,7 +49,7 @@ process.on("uncaughtException", (err) => {
 });
 
 app.listen(PORT, () => {
-  const msg = `Server (${process.env.APP_NAME}) running on http://localhost:${PORT}`;
+  const msg = `Server (${process.env.APP_NAME}) running on http://localhost:${process.env.SERVER_PORT}`;
   console.log(msg);
   logger.info(msg);
 });

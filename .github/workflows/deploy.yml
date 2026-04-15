@@ -15,7 +15,10 @@ jobs:
   deploy:
     name: Deploy to EC2
     runs-on: ubuntu-latest
-
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NODE_ENV: production
+      SERVER_PORT: 3000
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,14 +32,14 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
 
-      - name: Install dependencies
-        run: npm ci
+      # - name: Install dependencies
+      #   run: npm ci
 
-      # - name: Run tests
-      #   run: npm test
+      # # - name: Run tests
+      # #   run: npm test
 
-      - name: Build app
-        run: npm run build
+      # - name: Build app
+      #   run: npm run build
 
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -116,13 +119,20 @@ jobs:
             npm run build
             echo "✅ Build complete"
 
+            # ── 6. List Build output files ───────────────────────────────────────
+            echo "📁 Listing build output...
+            ls -la "$APP_DIR/dist"
+            ls -la "$APP_DIR/dist/*.js" 
+
             # Migrate all new SQl schema changes - using drizzle-kit push
             echo "Migrating database schema changes..."
             npx drizzle-kit push
             echo "✅ Database migration completed"
 
             # ── 4. Restart app with PM2 ───────────────────────────────
-            pm2 start dist/index.js --name "$APP_NAME" -i max
+            pm2 describe $APP_NAME > /dev/null 2>&1 \
+              && pm2 restart $APP_NAME \
+              || pm2 start npm --name "$APP_NAME" -- start
 
             pm2 save
 
