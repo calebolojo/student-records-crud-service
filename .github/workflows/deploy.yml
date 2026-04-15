@@ -125,7 +125,7 @@ jobs:
 
             # ── 8. Prune devDependencies after build ──────────────────
             echo "Pruning devDependencies..."
-            npm prune --omit=dev    # ← remove devDeps now that build is done
+            sudo npm prune --omit=dev    # ← remove devDeps now that build is done
             echo "✅ Pruned devDependencies"
 
             # Migrate all new SQl schema changes - using drizzle-kit push
