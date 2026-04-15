@@ -122,6 +122,7 @@ jobs:
             echo "Installing dependencies..."
             cd "$APP_DIR"
             npm ci
+            npx tsc --project tsconfig.json 2>&1
             echo "✅ Dependencies installed"
 
             # ── 6. Build on EC2 ───────────────────────────────────────
@@ -131,6 +132,10 @@ jobs:
 
             # ── 6. List Build output files ───────────────────────────────────────
             echo "📁 Listing build output..."
+            if [ ! -d "$APP_DIR/dist" ]; then
+              echo "ERROR: dist folder not found after build, aborting!"
+              exit 1
+            fi
             find "$APP_DIR/dist" -print
 
             # ── 8. Prune devDependencies after build ──────────────────
